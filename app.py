@@ -3,21 +3,28 @@ from flask import *
 import json
 import mysql.connector
 
-mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="Tj920419#!",
-    database="travel",
-)
-mycursor = mydb.cursor()
-cursor = mydb.cursor(dictionary=True)
-
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 # disable sorting the keys of JSON objects alphabetically
 app.config['JSON_SORT_KEYS'] = False
+
+
+mydb = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="Tj920419#!",
+    database="travel",
+)
+mydb.ping(reconnect=True, attempts=1, delay=0)
+
+if (mydb.is_connected()):
+    print("Connected")
+else:
+    print("Not connected")
+mycursor = mydb.cursor()
+cursor = mydb.cursor(dictionary=True)
 
 
 # Pages
