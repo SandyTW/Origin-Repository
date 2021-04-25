@@ -14,9 +14,9 @@ app.config['JSON_SORT_KEYS'] = False
 
 load_dotenv()  # take environment variables from .env.
 mydb = mysql.connector.connect(
-    host=os.getenv("DBHOST"),
-    user=os.getenv("DBUSER"),
-    password=os.getenv("DBPASSWORD"),
+    host="localhost",
+    user="root",
+    password="Tj920419#!",
     database="travel",
 )
 mydb.ping(reconnect=True, attempts=1, delay=0)
