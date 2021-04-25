@@ -1,10 +1,11 @@
 import json
 import mysql.connector
+from dotenv import load_dotenv
 
 mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="Tj920419#!",
+    host=os.getenv("DBHOST"),
+    user=os.getenv("DBUSER"),
+    password=os.getenv("DBPASSWORD"),
     database="travel",
 )
 mycursor = mydb.cursor()
@@ -25,13 +26,15 @@ for spot in spotlist:
     mrt = spot['MRT']
     latitude = spot['latitude']
     longitude = spot['longitude']
-    files = spot['file'].split('http')
 
-    imageList = []
+    files = spot['file'].split('http:')
+    imageList = ""
     for img in files:
         if img[-3:].lower() == 'jpg' or img[-3:].lower() == 'png':
-            imageList.append(f'http{img}')
-    images = str(imageList)
+            url="http:"+img
+            imageList += url+","
+    images = imageList
+
 
     sql = 'INSERT INTO TaipeiTravel VALUES (%s, %s, %s, %s,%s, %s, %s,%s, %s, %s)'
     value = (Id, name, category, description, address,
