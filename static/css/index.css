@@ -113,8 +113,6 @@ header{
     line-height:1.5;
 }
 .inputSearch{
-    /* margin-top:25px;
-    display: flex; */
     position: relative;  
     width:50%;
     margin-top:25px;
@@ -152,14 +150,6 @@ header{
     outline:none;
     cursor:pointer;
 }
-
-/* .searchBtn:hover{
-    background-color:#337788;
-}
-
-.searchBtn:active{
-    background-color: #66AABB;
-} */
 
 .searchBtn img{
     margin:5px auto 3px auto;
@@ -278,7 +268,6 @@ footer div{
 /* Media Query  */
 @media (max-width:1200px){
     .navigation{width:94.5%}
-    /* .binding{width:94.5%} */
     .navbar ul{padding:0}
     .navbar{width:50%}
     .title{width:50%}
@@ -288,9 +277,7 @@ footer div{
         max-width: 38%; 
         height: auto; 
         left:30%
-        /* right:-18%; */
     };
-    
     .box{width:45%}
     .image{width:100%} 
 }
@@ -309,8 +296,6 @@ footer div{
         bottom: 0;
         left:12.4%;
     }
-    /* .HeroSection{height:280px}; */
-    
     .box{width:90%};
     .image{width:100%};
 }

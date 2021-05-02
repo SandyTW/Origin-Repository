@@ -83,8 +83,8 @@ function dataProcessing(data) {
 // 處理 infinite scroll
 function scrolling() {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    console.log({ scrollTop, scrollHeight, clientHeight});
-    if (clientHeight + scrollTop >= scrollHeight - 3.5) {
+    // console.log({ scrollTop, scrollHeight, clientHeight});
+    if (clientHeight + scrollTop >= scrollHeight - 5) {
         console.log('to the bottom');
         //show the loading data
         loading();
