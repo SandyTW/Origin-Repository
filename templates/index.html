@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset='UTF-8'>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>台北一日遊 Home Page</title>
+   <link rel="shortcut icon" href="#">
+   <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/index.css')}}">
+</head>
+
+<body>
+   <header>
+      <div class="navigation">
+            <div class="title"><a href="/">台北一日遊</a></div>
+            <div class="navbar">
+               <ul>
+                  <li id='navBooking'><a href="/booking">預定行程</a></li>
+                  <li id='navLogin'><a href="#">登入/註冊</a></li>
+               </ul>
+            </div>
+      </div>
+   </header>
+
+   <section class="HeroSection">
+      <div class="binding">
+         <div class="HeroContainer">
+            <div class="Header1">輕鬆享受台北一日悠閒</div>
+            <p class="Header2">探索每個角落，體驗城市的深度旅遊行程</p>
+
+            <form class="inputSearch">
+               <input tpye='text' class='searchData' id='wordforsearch' placeholder='輸入景點名稱查詢' required/>
+               <button type='submit' class='searchBtn' onclick='searchAttraction(event)'><img src="{{url_for('static', filename='image/icon_search.png')}}" alt='search'></button>
+            </form>
+         </div>
+         <img class='HeroImg' src="{{url_for('static', filename='image/welcome1.svg')}}" alt='search'>
+         </div>
+      </div>
+   </section>
+
+   <!-- Attraction Display -->
+   <main class="PicSection" id='picSection'>
+      <!-- <div class="box">
+         <img class='image' src="http://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg" alt="">
+         <div class="boxText">
+            <div class="imgTitle">平安鐘</div>
+            <div class="imgInfo">
+               <div class="imgMrt">忠孝復興</div>
+               <div class="imgCategory">公共藝術</div>
+            </div>
+         </div>
+      </div> -->
+      
+   </main>
+   <div class='loadingBall'>
+      <div class='ball'></div>
+      <div class='ball'></div>
+      <div class='ball'></div>
+   </div>
+   
+   <footer>
+      <div class='footertext'>COPYRIGHT © 2021 台北一日遊</div>
+   </footer>
+</body>
+
+<script src="{{url_for('static',filename='js/index.js')}}"></script>
+
+</html>
