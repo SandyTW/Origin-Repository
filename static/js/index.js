@@ -3,9 +3,9 @@ let nextPage = 0;
 let keyword;
 let apiUrl;
 
-
 getAttractions(page, keyword);
 
+window.addEventListener('scroll', scrolling);
 
 function getAttractions(page, keyword) {
     if (keyword) {
@@ -13,6 +13,7 @@ function getAttractions(page, keyword) {
     } else {
         apiUrl = `/api/attractions?page=${page}`;
     }
+    console.log(apiUrl);
     fetch(apiUrl).then(function (response) {
         return response.json();
     }).then((rawData) => {
@@ -22,7 +23,7 @@ function getAttractions(page, keyword) {
     });
 };
 
-
+// 處理 Attraction Display
 function dataProcessing(data) {
     let attractions = data['data'];
     if (attractions) {
@@ -62,7 +63,6 @@ function dataProcessing(data) {
             category.textContent = attractions[i]['category'];
             mrt.textContent = attractions[i]['mrt']
         }
-        window.addEventListener('scroll', scrolling)
     } else {
         let attractionContainer = document.createElement('div');
         attractionContainer.classList.add('box');
@@ -79,7 +79,7 @@ function dataProcessing(data) {
     }
 };
 
-
+// 處理 infinite scroll
 function scrolling() {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
     // console.log({ scrollTop, scrollHeight, clientHeight});
@@ -87,7 +87,6 @@ function scrolling() {
         console.log('to the bottom');
         //show the loading data
         loading();
-        window.removeEventListener('scroll', scrolling);
     }
 };
 
@@ -95,12 +94,13 @@ function scrolling() {
 function loading() {
     if (nextPage !== null) {
         page = nextPage;
-        console.log(page);
+        keyword=document.getElementById('wordforsearch').value;
+        console.log(page, keyword);
         getAttractions(page, keyword);
     }
 };
 
-
+// 處理 search attractions by keyword
 function searchAttraction(event) {
     event.preventDefault();
     while (document.getElementById('attractionContent')) {
@@ -110,8 +110,9 @@ function searchAttraction(event) {
     page = 0;
     if (keyword==''){
         return false;
-    };
-    let NewAttrContainer = document.createElement('div');
-    console.log(page, keyword);
-    getAttractions(page, keyword);
+    }else{
+        console.log(keyword);
+        // nextPage=0;
+        getAttractions(page, keyword);
+    }
 };
