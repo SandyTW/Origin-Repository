@@ -5,7 +5,8 @@ let apiUrl;
 
 getAttractions(page, keyword);
 
-window.addEventListener('scroll', scrolling);
+window.addEventListener('scroll', debounce(scrolling, 200));
+// window.addEventListener('scroll', scrolling);
 
 function getAttractions(page, keyword) {
     if (keyword) {
@@ -82,7 +83,7 @@ function dataProcessing(data) {
 // 處理 infinite scroll
 function scrolling() {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    // console.log({ scrollTop, scrollHeight, clientHeight});
+    console.log({ scrollTop, scrollHeight, clientHeight});
     if (clientHeight + scrollTop >= scrollHeight - 3.5) {
         console.log('to the bottom');
         //show the loading data
@@ -100,6 +101,20 @@ function loading() {
     }
 };
 
+function debounce(func, delay) {
+	let timeout=null;
+	return function() {
+		let context = this;
+        let args = arguments;
+
+		clearTimeout(timeout);
+		timeout = setTimeout(function(){
+            timeout=null;
+            func.apply(context, args);
+        }, delay);
+	};
+};
+
 // 處理 search attractions by keyword
 function searchAttraction(event) {
     event.preventDefault();
@@ -112,7 +127,6 @@ function searchAttraction(event) {
         return false;
     }else{
         console.log(keyword);
-        // nextPage=0;
         getAttractions(page, keyword);
     }
 };
