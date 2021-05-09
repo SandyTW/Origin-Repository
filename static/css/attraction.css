@@ -81,6 +81,7 @@ main{
 
 .rotator{
     position:relative;
+    height: 406px;
     width: 540px;
     padding: 0px 15px;
     overflow: hidden;
@@ -91,6 +92,7 @@ main{
 }
 .spotImg{
     height: 406px;
+    width: 540px;
     border-radius: 5px;
     object-fit: cover;
 }
@@ -126,7 +128,7 @@ main{
 .pointsGroup{
     display: flex;
     position: absolute;
-    bottom: 15px;
+    bottom: 6%;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -160,7 +162,7 @@ main{
 .spotName{
     font-weight: bold;
     font-size: 24px;
-    line-height: 24px;
+    line-height: 1.6;
 
 }
 .spotBrief{
