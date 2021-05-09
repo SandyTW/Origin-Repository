@@ -76,7 +76,7 @@ main{
     display: flex;
     flex-wrap: wrap;
     padding-top:37px;
-    width:90%;
+    /* width:90%; */
 }
 
 .rotator{
@@ -85,7 +85,10 @@ main{
     padding: 0px 15px;
     overflow: hidden;
 }
-
+.slides{
+    object-fit: cover;;
+    overflow: hidden;
+}
 .spotImg{
     height: 406px;
     border-radius: 5px;
@@ -290,6 +293,7 @@ footer div{
     .navbar ul{padding:0}
     .navbar{width:50%}
     .title{width:50%}
+    .maincontainer{width: 90%}
     .rotator{width:94.5%}
     .spotImg{width: 100%;
         margin-left: auto;
@@ -304,7 +308,7 @@ footer div{
         /* right: 10px; */
     }
     .profile{width: 94.5%;}
-
+    .spotDetails{width: 94.5%;}
 
 
 }
@@ -324,5 +328,7 @@ footer div{
     }
     .profile {
         width: 94.5%;
+        padding-top: 20px;
     }
+    .spotDetails{width: 90%;}
 }
