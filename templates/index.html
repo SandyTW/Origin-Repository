@@ -12,13 +12,13 @@
 <body>
    <header>
       <div class="navigation">
-            <div class="title"><a href="/">台北一日遊</a></div>
-            <div class="navbar">
-               <ul>
-                  <li id='navBooking'><a href="/booking">預定行程</a></li>
-                  <li id='navLogin'><a href="#">登入/註冊</a></li>
-               </ul>
-            </div>
+         <div class="title"><a href="/">台北一日遊</a></div>
+         <div class="navbar">
+            <ul>
+               <li id='navBooking'><a href="/booking">預定行程</a></li>
+               <li id='navLogin'><a href="#">登入/註冊</a></li>
+            </ul>
+         </div>
       </div>
    </header>
 
@@ -29,12 +29,13 @@
             <p class="Header2">探索每個角落，體驗城市的深度旅遊行程</p>
 
             <form class="inputSearch">
-               <input tpye='text' class='searchData' id='wordforsearch' placeholder='輸入景點名稱查詢' required/>
-               <button type='submit' class='searchBtn' onclick='searchAttraction(event)'><img src="{{url_for('static', filename='image/icon_search.png')}}" alt='search'></button>
+               <input tpye='text' class='searchData' id='wordforsearch' placeholder='輸入景點名稱查詢' required />
+               <button type='submit' class='searchBtn' onclick='searchAttraction(event)'><img
+                     src="{{url_for('static', filename='image/icon_search.png')}}" alt='search'></button>
             </form>
          </div>
          <img class='HeroImg' src="{{url_for('static', filename='image/welcome1.svg')}}" alt='search'>
-         </div>
+      </div>
       </div>
    </section>
 
@@ -50,14 +51,9 @@
             </div>
          </div>
       </div> -->
-      
+
    </main>
-   <div class='loadingBall'>
-      <div class='ball'></div>
-      <div class='ball'></div>
-      <div class='ball'></div>
-   </div>
-   
+
    <footer>
       <div class='footertext'>COPYRIGHT © 2021 台北一日遊</div>
    </footer>

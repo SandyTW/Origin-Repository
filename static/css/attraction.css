@@ -1,0 +1,328 @@
+
+body{
+    font-family: 'Noto Sans TC', sans-serif;
+    margin:0px;
+}
+
+header{
+    height:54px;
+    margin:auto;
+    position: fixed;
+    top:0;
+    left:0;
+    right: 0;
+    z-index: 999;
+    background-color:#ffffff;
+    overflow: hidden;
+}
+
+.navigation{
+    width: 1200px;
+    height:54px;
+    left:0px;
+    top:0px;
+    display:flex;
+    margin:auto;
+}
+
+.title{
+    width:50%;
+    margin:auto;
+    color:#448800;
+    flex:none;
+}
+
+.title a{
+    font-weight: 700;
+    font-size: 30px;
+    color: #448899;
+    text-decoration: none;
+}
+
+.navbar{
+    flex: none;
+    width: 50%;
+    margin: auto 0;
+    text-align: right;
+}
+
+.navbar ul li{
+    color:#666666;
+    display: inline-block;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.navbar ul li a{
+    text-decoration: none;
+    color: #666666;
+}
+
+.navbar ul li:hover{
+    border-bottom: 1px solid #666666;
+}
+
+
+/* main */
+main{
+    padding-top: 54px;
+    display: flex;
+}
+
+.maincontainer{
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    padding-top:37px;
+    width:90%;
+}
+
+.rotator{
+    position:relative;
+    width: 540px;
+    padding: 0px 15px;
+    overflow: hidden;
+}
+
+.spotImg{
+    height: 406px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+.leftArrow{
+    position: absolute;
+    left: 3%;
+    top: 50%;
+    background-color:transparent;
+    border-style:none;
+    opacity: 0.7;
+    outline:none;
+    cursor: pointer;
+}
+.rightArrow{
+    position: absolute;
+    right: 3%;
+    top: 50%;
+    background-color:transparent;
+    border-style:none;
+    opacity: 0.7;
+    outline:none;
+    cursor: pointer;
+}
+
+.leftArrow:hover, .rightArrow:hover{
+    opacity:0.5;
+}
+
+.leftArrow:active, .rightArrow:active{
+    opacity:0.7;
+}
+
+.pointsGroup{
+    display: flex;
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.ball{
+    list-style: none;
+    width: 12px;
+    height: 12px;
+    background-color:#ffffff;
+    border-radius: 50%;
+    margin: 0 5px;
+    opacity: 0.8;
+    border: 1px solid #FFFFFF;
+    cursor: pointer;
+}
+
+#active{
+    background-color: #000000;
+}
+.ball:hover {
+    background-color: #757575;
+}
+
+
+
+.profile{
+    width:600px;
+    padding: 15px;
+    color: #666666;
+}
+.spotName{
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 24px;
+
+}
+.spotBrief{
+    font-size: 16px;
+    margin: 15px 0;
+
+}
+
+.bookingform{
+    height: 302px;
+    background: #E8E8E8;
+    border-radius: 5px;
+    padding-top: 7.5px;
+    padding-left:3.34%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.bookingform div{
+    margin:7.5px auto 7.5px 0px;
+    font-weight: bold;
+}
+.bookingform p{
+    margin:7.5px auto 7.5px 0px;
+}
+.bookingform span{
+    font-weight: bold;
+}
+.radioBtn{
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+    vertical-align:bottom;
+}
+
+input[type='date']{
+    outline: none;
+    padding-left: 10px;
+    font-size: 16px;
+    width: 193px;
+    height: 35px;
+    background-color: #ffffff;
+    color: #757575;
+    border: transparent;
+}
+
+input[type='radio'] {
+    width: 10px;
+    height: 10px;
+    margin-right: 10px;
+    margin-left: 18px;
+  }
+
+  input[type='radio']:after {
+    width: 22px;
+    height: 22px;
+    position: relative;
+    top: -7px;
+    left: -10px;
+    border-radius: 22px;
+    background-color: white;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+  }
+  input[type='radio']:checked:after {
+    width: 22px;
+    height: 22px;
+    border-radius: 18px;
+    background-color: #448899;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+  }
+  
+
+
+
+#charge{
+    font-weight: normal;
+}
+.orderBtn{
+    width: 154px;
+    height: 36px;
+    background-color: #448899;
+    border: 0px;
+    border-radius: 5px;
+    color: white;
+    font-size: 19px;
+    outline: none;
+    margin-top:17.5px;
+}
+.spotDetails{
+    color: #666666;
+    margin: 0 15px;
+    line-height: 1.8;
+    text-align: justify;
+    padding-top:50px;
+    padding-bottom: 100px;
+}
+.spotDetails div{
+    margin-bottom:20px;
+}
+.spotDetails p{
+    font-weight:bold;
+    margin:5px 0;
+}
+/* footer */
+footer{
+    background-color:#757575;
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    height:104px;
+}
+
+
+footer div{
+    margin:45px auto;
+    color: #fff;
+    font-weight: bold;
+}
+
+@media(max-width:1200px){
+    .navigation{width:94.5%}
+    .navbar ul{padding:0}
+    .navbar{width:50%}
+    .title{width:50%}
+    .rotator{width:94.5%}
+    .spotImg{width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    #left-btn{
+        position: absolute;
+        /* left: 15px; */
+    }
+    #right-btn{
+        position: absolute;
+        /* right: 10px; */
+    }
+    .profile{width: 94.5%;}
+
+
+
+}
+
+@media (max-width: 600px){
+    .navbar ul li{margin-right:5px}
+    .maincontainer{width: 100%;}
+    .rotator{
+        width: 100%;
+        height: 350px;
+        padding: 0px;
+    }
+    .spotImg{
+        width: 100%;
+        padding: 0px;
+        max-height: 350px;
+    }
+    .profile {
+        width: 94.5%;
+    }
+}
