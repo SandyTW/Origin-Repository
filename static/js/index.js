@@ -37,32 +37,38 @@ function dataProcessing(data) {
             let img = document.createElement('img');
             img.classList.add('image');
             img.src = attractions[i]['images'][0];
-
+            
             let textBox = document.createElement('div');
             textBox.classList.add('boxText');
 
             let title = document.createElement('div');
             title.classList.add('imgTitle');
+            title.textContent = attractions[i]['name'];
 
             let info = document.createElement('div');
             info.classList.add('imgInfo');
 
             let category = document.createElement('div');
             category.classList.add('imgCategory');
+            category.textContent = attractions[i]['category'];
 
             let mrt = document.createElement('div');
             mrt.classList.add('imgMrt');
+            mrt.textContent = attractions[i]['mrt'];
 
+            let id=document.createElement('a');
+            attrID=attractions[i]['id']
+            id.href='/attraction/' + attrID
+
+            id.appendChild(img);
             info.append(mrt, category);
             textBox.append(title, info);
-            attractionContainer.appendChild(img);
+            attractionContainer.appendChild(id);
             attractionContainer.appendChild(textBox);
             document.getElementById('picSection').appendChild(attractionContainer);
 
 
-            title.textContent = attractions[i]['name'];
-            category.textContent = attractions[i]['category'];
-            mrt.textContent = attractions[i]['mrt']
+
         }
     } else {
         let attractionContainer = document.createElement('div');
