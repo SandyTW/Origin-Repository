@@ -23,13 +23,15 @@
       </div>
    </header>
 
-    <!-- Popups Forms -->
+   <!-- Popups Forms -->
    <div class='popUp' id='popUplogin'>
       <span></span>
       <p class='subject'>登入會員帳號</p>
       <a class='closeBtn' onclick="closePopup(this)"><img src="{{url_for('static', filename='image/icon_close.png')}}" alt='close'/></a>
-      <input type="text" id='loginEmail' placeholder="輸入電子信箱">
-      <input type="text" id='loginPassword' placeholder="輸入密碼">
+      <form>
+         <input type="text" id='loginEmail' placeholder="輸入電子信箱">
+         <input type="password" id='loginPassword' placeholder="輸入密碼" autocomplete="off">
+      </form>
       <p class='ErrorMsg' id='loginError'>帳號或密碼輸入錯誤</p>
       <p class='Msg' id='loginResult'></p>
       <button class=popBtn onclick='userLogin()'>登入帳戶</button>
@@ -40,9 +42,11 @@
       <span></span>
       <p class='subject'>註冊會員帳號</p>
       <a class='closeBtn' onclick="closePopup(this)"><img src="{{url_for('static', filename='image/icon_close.png')}}" alt='close'/></a>
-      <input type="text" id='registerName' placeholder="輸入姓名">
-      <input type="text" id='registerEmail' placeholder="輸入電子信箱">
-      <input type="text" id='registerPassword' placeholder="輸入密碼">
+      <form>
+         <input type="text" id='registerName' placeholder="輸入姓名">
+         <input type="text" id='registerEmail' placeholder="輸入電子信箱">
+         <input type="password" id='registerPassword' placeholder="輸入密碼" autocomplete="off">
+      </form>   
       <p class='ErrorMsg' id='registerDuplicated'>註冊失敗，此Email已被使用</p>
       <p class='Msg' id='registerResult'></p>
       <button class='popBtn' onclick='newRegister()'>註冊新帳戶</button>

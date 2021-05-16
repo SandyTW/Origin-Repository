@@ -201,15 +201,20 @@ function newRegister(){
         let msgBox=document.getElementById('registerResult');
         msgBox.textContent='';
 
-        if (registerDone){
-            msgBox.textContent='註冊成功'
-            
+        if (registerDone){ 
+            msgBox.textContent='註冊成功';    
+            document.getElementById('registerName').value='';
+            document.getElementById('registerEmail').value='';
+            document.getElementById('registerPassword').value='';
         }else{
             let msgBox=document.getElementById('registerResult');
             msgBox.textContent=result['message']
             msgBox.style.display='block';
+            document.getElementById('registerName').value='';
+            document.getElementById('registerEmail').value='';
+            document.getElementById('registerPassword').value='';
         }
-    });
+    });   
 }
 
 // 登入流程
@@ -264,3 +269,4 @@ function userLogout(){
         }
     })
 }
+    
