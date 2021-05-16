@@ -51,6 +51,10 @@ header{
     display: inline-block;
     margin-right: 10px;
     font-size: 16px;
+    cursor: pointer;
+    /*  */
+    visibility:visible;
+    display:none; 
 }
 
 .navbar ul li a{
@@ -283,12 +287,117 @@ footer{
     height:104px;
 }
 
-
 footer div{
     margin:45px auto;
     color: #fff;
     font-weight: bold;
 }
+
+/* popups form */
+.popUp{
+    display: none;
+    position: fixed;
+    z-index: 10;
+    top: 20vh;
+    left: calc((100% - 340px) / 2);
+    text-align: center;
+    width: 310px;
+    background-color: #fff;
+    padding: 25px 15px 15px 15px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 60px #AAAAAA;
+}
+
+.popUp span{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 10px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background: linear-gradient(270deg, #337788 0%, #66AABB 100%);
+}
+
+.closeBtn{
+    position: absolute;
+    top: 27px;
+    right: 17px;  
+}
+
+.subject{
+    text-align: center;
+    color: #666666;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    margin-top: 0px;
+}
+
+.popUp input{
+    display: block;
+    width: 280px;
+    height:15px;
+    font-size: 16px;
+    padding: 14px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.popBtn{
+    display: block;
+    width: 100%;
+    line-height: 19px;
+    font-size: 19px;
+    padding: 12px;
+    color: #fff;
+    background-color: #448899;
+    border: 1px solid #448899;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    outline: none;
+}
+
+.ErrorMsg, .Msg{
+    font-weight: 700;
+    color: #448899;
+    font-size: 19px;
+    margin:0px;
+    line-height: 2em;
+}
+
+.registerBtn, .loginBtn{
+    display: inline-block;
+    color: #666;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.pageShadow{
+    z-index: 3;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #808080;;
+    opacity: .25;
+}
+
+#registerError, #registerDuplicated, #registerDone{
+    display: none;
+}
+
+#loginError{
+    display: none;
+}
+
+
 
 @media(max-width:1200px){
     .navigation{width:94.5%}

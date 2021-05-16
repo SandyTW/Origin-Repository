@@ -8,8 +8,10 @@ from dotenv import load_dotenv
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
-app.config["TEMPLATES_AUTO_RELOAD"] = True # disable sorting the keys of JSON objects alphabetically
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+# disable sorting the keys of JSON objects alphabetically
 app.config['JSON_SORT_KEYS'] = False
+app.config['SECRET_KEY'] = os.urandom(24)
 
 
 load_dotenv()  # take environment variables from .env.
@@ -48,6 +50,98 @@ def booking():
 @app.route("/thankyou")
 def thankyou():
     return render_template("thankyou.html")
+
+
+# 使用者API
+@app.route("/api/user", methods=["GET"])
+def getUser():
+    if "user" in session:
+        data = {
+            "id": session["user"]['id'],
+            "name": session["user"]['name'],
+            "email": session["user"]['email'],
+        }
+        return jsonify({"data": data}), 200
+    else:
+        return jsonify({ "data": None }), 200
+
+@app.route("/api/user", methods=["POST"])
+def userRegister():
+    try:
+        name = request.get_json()["name"]
+        email = request.get_json()["email"]
+        password = request.get_json()["password"]
+
+        if not (name and email and password):
+            return jsonify({ 
+                "error": True, 
+                "message": "註冊失敗，姓名、帳號和密碼不得為空" 
+            }), 400
+
+        cursor.execute('SELECT * FROM user WHERE email = %s', (email,))
+        CurrentUser=cursor.fetchone()
+        if CurrentUser:
+            return jsonify({ 
+                "error": True, 
+                "message": "註冊失敗，此信箱已被使用" 
+            }), 400
+        else:
+            cursor.execute('INSERT INTO user VALUES (default, %s, %s, %s, default)', (name, email, password))
+            mydb.commit()
+            return jsonify({ 
+                "ok": True 
+            }), 200
+    except Exception as err:
+        print(err)
+        return jsonify({ 
+            "error": True, 
+            "message": "伺服器內部錯誤" 
+        }), 500
+   
+@app.route("/api/user", methods=["PATCH"])
+def userLogin():
+    try:
+        email = request.get_json()["email"]
+        password = request.get_json()["password"]
+        if not (email and password):
+            return jsonify({ "error": True, "message": "登入失敗，帳號、密碼不得為空" })
+
+        cursor.execute('SELECT * FROM user WHERE email = %s AND password = %s', (email, password))
+        CurrentUser=cursor.fetchone()
+        if CurrentUser: 
+            session["user"] = {
+            "id": CurrentUser["id"],
+            "name": CurrentUser["name"],
+            "email": CurrentUser["email"]
+            }
+            print(session['user'])
+            return jsonify({ 
+                "ok": True }), 200
+        else:
+             return jsonify({"error": True, "message": "登入失敗，帳號或密碼錯誤"}), 400
+    except Exception as err:
+        print(err)
+        return jsonify({
+            "error": True, 
+            "message": "伺服器內部錯誤"}), 500
+
+@app.route("/api/user", methods=["DELETE"])
+def userLogout():
+    try:
+        session.pop("user", None)
+        if "user" not in session:
+            return jsonify({
+                "ok": True }), 200
+        else: 
+            return jsonify({
+                "error": True, 
+                "message": "發生錯誤，請重試"
+                }), 400
+    except Exception as err:
+        print(err)
+        return jsonify({
+            "error": True, 
+            "message": "伺服器內部錯誤"}), 500
 
 
 # 旅遊景點API
