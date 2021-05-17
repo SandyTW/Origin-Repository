@@ -16,12 +16,45 @@
          <div class="navbar">
             <ul>
                <li id='navBooking'><a href="/booking">預定行程</a></li>
-               <li id='navLogin'><a href="#">登入/註冊</a></li>
+               <li id='navLogin'><a onclick="openPopupForm('popUplogin')">登入/註冊</a></li>
+               <li id='navLogout'><a onclick="userLogout()">登出系統</a></li>
             </ul>
          </div>
       </div>
    </header>
 
+   <!-- Popups Forms -->
+   <div class='popUp' id='popUplogin'>
+      <span></span>
+      <p class='subject'>登入會員帳號</p>
+      <a class='closeBtn' onclick="closePopup(this)"><img src="{{url_for('static', filename='image/icon_close.png')}}" alt='close'/></a>
+      <form>
+         <input type="text" id='loginEmail' placeholder="輸入電子信箱">
+         <input type="password" id='loginPassword' placeholder="輸入密碼" autocomplete="off">
+      </form>
+      <p class='ErrorMsg' id='loginError'>帳號或密碼輸入錯誤</p>
+      <p class='Msg' id='loginResult'></p>
+      <button class=popBtn onclick='userLogin()'>登入帳戶</button>
+      <a class='registerBtn' onclick='openRegister()'>還沒有帳戶？點此註冊</a>
+   </div>
+
+   <div class='popUp' id='popUpRegister'>
+      <span></span>
+      <p class='subject'>註冊會員帳號</p>
+      <a class='closeBtn' onclick="closePopup(this)"><img src="{{url_for('static', filename='image/icon_close.png')}}" alt='close'/></a>
+      <form>
+         <input type="text" id='registerName' placeholder="輸入姓名">
+         <input type="text" id='registerEmail' placeholder="輸入電子信箱">
+         <input type="password" id='registerPassword' placeholder="輸入密碼" autocomplete="off">
+      </form>   
+      <p class='ErrorMsg' id='registerDuplicated'>註冊失敗，此Email已被使用</p>
+      <p class='Msg' id='registerResult'></p>
+      <button class='popBtn' onclick='newRegister()'>註冊新帳戶</button>
+      <a class='loginBtn' onclick="openPopupForm('popUplogin')">已經有帳戶了？點此登入</a>
+   </div>
+   <div class="pageShadow" onclick="closePopup(this)"></div>
+  
+   <!-- Hero Section -->
    <section class="HeroSection">
       <div class="binding">
          <div class="HeroContainer">
@@ -57,6 +90,7 @@
    <footer>
       <div class='footertext'>COPYRIGHT © 2021 台北一日遊</div>
    </footer>
+
 </body>
 
 <script src="{{url_for('static',filename='js/index.js')}}"></script>
