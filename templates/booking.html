@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>台北一日遊 - 預定行程</title>
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/booking.css')}}">
+</head>
+
+<body>
+    <header>
+        <div class="navigation">
+            <div class="title"><a href="/">台北一日遊</a></div>
+            <div class="navbar">
+                <ul>
+                    <li id='navBooking'><a href='/'>預定行程</a></li>
+                    <!-- <li id='navLogin'><a onclick="openPopupForm('popUplogin')">登入/註冊</a></li> -->
+                    <li id='navLogout'><a onclick="userLogout()">登出系統</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Popups Forms -->
+    <div class='popUp' id='popUplogin'>
+        <span></span>
+        <p class='subject'>登入會員帳號</p>
+        <a class='closeBtn' onclick="closePopup(this)"><img src="{{url_for('static', filename='image/icon_close.png')}}"
+                alt='close' /></a>
+        <form>
+            <input type="email" id='loginEmail' placeholder="輸入電子信箱">
+            <input type="password" id='loginPassword' placeholder="輸入密碼" autocomplete="off">
+        </form>
+        <p class='ErrorMsg' id='loginError'>帳號或密碼輸入錯誤</p>
+        <p class='Msg' id='loginResult'></p>
+        <button class=popBtn onclick='userLogin()'>登入帳戶</button>
+        <a class='registerBtn' onclick='openRegister()'>還沒有帳戶？點此註冊</a>
+    </div>
+
+    <div class='popUp' id='popUpRegister'>
+        <span></span>
+        <p class='subject'>註冊會員帳號</p>
+        <a class='closeBtn' onclick="closePopup(this)"><img src="{{url_for('static', filename='image/icon_close.png')}}"
+                alt='close' /></a>
+        <form>
+            <input type="text" id='registerName' placeholder="輸入姓名">
+            <input type="email" id='registerEmail' placeholder="輸入電子信箱">
+            <input type="password" id='registerPassword' placeholder="輸入密碼" autocomplete="off">
+        </form>
+        <p class='ErrorMsg' id='registerDuplicated'>註冊失敗，此Email已被使用</p>
+        <p class='Msg' id='registerResult'></p>
+        <button class='popBtn' onclick='newRegister()'>註冊新帳戶</button>
+        <a class='loginBtn' onclick="openPopupForm('popUplogin')">已經有帳戶了？點此登入</a>
+    </div>
+    <div class="pageShadow" onclick="closePopup(this)"></div>
+<!-- main -->
+    <main>
+        <div class='attrDisplay'> 
+            <div class='headline'>你好，<span id="username">[username]</span>，待預訂的行程如下：</div>
+        <section class='orderResult'>
+            <div class='bookingOrder'>
+                <div class='img'>
+                    <img class='image' src="" alt="">
+                </div>
+                <div class="info">
+                    <h3>台北一日遊：<span id="attraction"></span></h3>
+                    <div>
+                        <span>日期：</span><span id="date"></span>
+                    </div>
+                    <div>
+                        <span>時間：</span><span id="time"></span>
+                    </div>
+                    <div>
+                        <span>費用：</span><span id='pricebase'>新台幣</span><span id="price"></span><span id='pricebase'>元</span>
+                    </div>
+                    <div>
+                        <span>地點：</span><span id="address"></span>
+                    </div>
+                </div>
+                <div class='deleteBtn'>
+                    <a onclick='deleteBooking()'><img src="../static/image/icon_delete.svg" alt=" " width="30px"></a>
+                </div>
+            </div>
+            <hr class='seperator' size="1px" width="100%" color="#E8E8E8">
+            <div class='contactForm'>
+                <h3>您的聯絡資訊</h3>
+                <form action="" method="post">
+                    <div class='formField'>
+                        <label for="name">聯絡姓名：</label>
+                        <input type="text" name="name" id="name" value="" required>
+                    </div>
+                    <div class='formField'>
+                        <label for="email">連絡信箱：</label>
+                        <input type="email" name="email" id="email" value="" required><input type="submit">
+                    </div>
+                    <div class='formField'>
+                        <label for="mobile">手機號碼：</label>
+                        <input type="text" name="phone" id="phone" value="" required>
+                    </div>
+                </form>
+                <p>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
+            </div>
+            <hr class='seperator' size="1px" width="100%" color="#E8E8E8">
+            <div class='paymentArea'>
+                <h3>信用卡付款資訊</h3>
+                <form action="" method="post">
+                    <div class='formField'>
+                        <label for='cardNumber'>卡片號碼：</label>
+                        <input type="password" name="cardNumber" id="cardNo" autocomplete="off" required>
+                    </div>
+                    <div class='formField'>
+                        <label for='expirationDate'>過期時間：</label>
+                        <input type="text" name="expirationDate" id="expireDate" placeholder="MM / YY" required>
+                    </div>
+                    <div class='formField'>
+                        <label for='cardCVV'>驗證密碼：</label>
+                        <input type="text" name="cvvCode" id="cvv" placeholder="CVV" required>
+                    </div>
+                </form>
+            </div>
+            <hr class='seperator' size="1px" width="100%" color="#E8E8E8">
+    
+            <div class="billing">
+                <h4>總價：新台幣 <span id="amount">2000</span> 元</h4>
+                <button>確認訂購並付款</button>
+            </div>
+        </section>
+
+    </main>
+<!-- Main Content -->
+
+    <footer>
+        <div class='footertext'>COPYRIGHT © 2021 台北一日遊</div>
+    </footer>
+
+</body>
+
+<script src="{{url_for('static',filename='js/booking.js')}}"></script>
+
+</html>

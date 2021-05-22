@@ -114,7 +114,7 @@ def userLogin():
             "name": CurrentUser["name"],
             "email": CurrentUser["email"]
             }
-            print(session['user'])
+            # print(session['user'])
             return jsonify({ 
                 "ok": True }), 200
         else:
@@ -234,6 +234,100 @@ def getAttractionsId(attractionId):
             "data": spotList
         }
         return jsonify(SearchResult), 200
+
+# 預定行程API
+@app.route("/api/booking", methods=["GET"])
+def getBooking():
+    try:
+        if 'user' in session:
+            if 'booking' not in session:
+                return {"data": None}
+            else:
+                attractionId=session["booking"]['attractionId']
+                date = session["booking"]['date']
+                time = session["booking"]['time']
+                price = session["booking"]['price']
+
+                cursor.execute("SELECT * FROM TaipeiTravel WHERE id=%s", (attractionId,))
+                results = cursor.fetchall()
+
+                for result in results:
+                    attraction = {}
+                    attraction ["id"] = result['id']
+                    attraction ["name"] = result['name']
+                    attraction ["address"] = result["address"]
+                    attraction ["images"] = result["images"].split(",")[:-1]
+                
+                data = {
+                        "attraction": attraction,
+                        "date": date,
+                        "time": time,
+                        "price": price
+                }
+                return jsonify({"data": data}), 200
+        else:
+            return jsonify({
+                "error": True, 
+                "message": "未登入系統，拒絕存取"}), 403
+    
+    except Exception as err:
+        print(err)
+        return jsonify({
+            "error": True, 
+            "message": "伺服器內部錯誤"}), 500
+
+
+@app.route("/api/booking", methods=["POST"])
+def postBooking():
+    try:
+        if 'user' in session:
+            attractionId = request.get_json()["attractionId"]
+            date = request.get_json()["date"]
+            time = request.get_json()["time"]
+            price = int(request.get_json()["price"])
+
+            if not (attractionId and date and time and price):
+                return jsonify({ 
+                    "error": True, 
+                    "message": "建立失敗，輸入不正確或其他原因"}), 400
+            
+            session["booking"] = {
+                "attractionId": attractionId,
+                "date": date,
+                "time": time,
+                "price": price,
+            }
+            print(session['booking'])            
+            return jsonify({ "ok": True }), 200
+        else:
+            return jsonify({
+                "error": True, 
+                "message": "未登入系統，拒絕存取"}), 403
+
+    except Exception as err:
+        print(err)
+        return jsonify({
+            "error": True, 
+            "message": "伺服器內部錯誤"}), 500
+
+@app.route("/api/booking", methods=["DELETE"])
+def deleteBooking():
+    try:
+        if 'user' in session:
+            session.pop("booking", None)
+            return jsonify({
+                "ok": True }), 200
+        else:
+            return jsonify({
+                "error": True, 
+                "message": "未登入系統，拒絕存取"}), 403
+    except Exception as err:
+        print(err)
+        return jsonify({
+            "error": True, 
+            "message": "伺服器內部錯誤"}), 500
+
+
 
 
 if __name__ == "__main__":
