@@ -7,6 +7,7 @@
     <title>台北一日遊 - 預定行程</title>
     <link rel="shortcut icon" href="#">
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/booking.css')}}">
+
 </head>
 
 <body>
@@ -55,88 +56,93 @@
         <a class='loginBtn' onclick="openPopupForm('popUplogin')">已經有帳戶了？點此登入</a>
     </div>
     <div class="pageShadow" onclick="closePopup(this)"></div>
-<!-- main -->
+    <!-- main -->
     <main>
-        <div class='attrDisplay'> 
+        <div class='attrDisplay'>
             <div class='headline'>你好，<span id="username">[username]</span>，待預訂的行程如下：</div>
-        <section class='orderResult'>
-            <div class='bookingOrder'>
-                <div class='img'>
-                    <img class='image' src="" alt="">
+            <section class='orderResult'>
+                <div class='bookingOrder'>
+                    <div class='img'>
+                        <img class='image' src="" alt="">
+                    </div>
+                    <div class="info">
+                        <h3>台北一日遊：<span id="attraction"></span></h3>
+                        <div>
+                            <span>日期：</span><span id="date"></span>
+                        </div>
+                        <div>
+                            <span>時間：</span><span id="time"></span>
+                        </div>
+                        <div>
+                            <span>費用：</span><span id='pricebase'>新台幣</span><span id="price"></span><span
+                                id='pricebase'>元</span>
+                        </div>
+                        <div>
+                            <span>地點：</span><span id="address"></span>
+                        </div>
+                    </div>
+                    <div class='deleteBtn'>
+                        <a onclick='deleteBooking()'><img src="../static/image/icon_delete.svg" alt=" "
+                                width="30px"></a>
+                    </div>
                 </div>
-                <div class="info">
-                    <h3>台北一日遊：<span id="attraction"></span></h3>
-                    <div>
-                        <span>日期：</span><span id="date"></span>
+                <hr class='seperator' size="1px" width="100%" color="#E8E8E8">
+                <form>
+                    <div class='contactForm'>
+                        <h3>您的聯絡資訊</h3>
+
+                        <div class='formField'>
+                            <label for="name">聯絡姓名：</label>
+                            <input type="text" name="name" id="name" value="" required>
+                        </div>
+                        <div class='formField'>
+                            <label for="email">連絡信箱：</label>
+                            <input type="email" name="email" id="email" value="" required>
+                        </div>
+                        <div class='formField'>
+                            <label for="mobile">手機號碼：</label>
+                            <input type="text" name="phone" id="phone" value="" required>
+                        </div>
+
+                        <p>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
                     </div>
-                    <div>
-                        <span>時間：</span><span id="time"></span>
+                    <hr class='seperator' size="1px" width="100%" color="#E8E8E8">
+
+                    <div class='paymentArea'>
+                        <h3>信用卡付款資訊</h3>
+
+                        <div class='formField'>
+                            <label for='cardNumber'>卡片號碼：</label>
+                            <input type="password" name="cardNumber" id="cardNo" autocomplete="off" required>
+                        </div>
+                        <div class='formField'>
+                            <label for='expirationDate'>過期時間：</label>
+                            <input type="text" name="expirationDate" id="expireDate" placeholder="MM / YY" maxlength="5"
+                                pattern="(?:0[1-9]|1[0-2])/[0-9]{2}" required>
+                        </div>
+                        <div class='formField'>
+                            <label for='cardCVV'>驗證密碼：</label>
+                            <input type="text" name="cvvCode" id="cvv" placeholder="CVV" maxlength="3" required>
+                        </div>
+
                     </div>
-                    <div>
-                        <span>費用：</span><span id='pricebase'>新台幣</span><span id="price"></span><span id='pricebase'>元</span>
-                    </div>
-                    <div>
-                        <span>地點：</span><span id="address"></span>
-                    </div>
-                </div>
-                <div class='deleteBtn'>
-                    <a onclick='deleteBooking()'><img src="../static/image/icon_delete.svg" alt=" " width="30px"></a>
-                </div>
-            </div>
-            <hr class='seperator' size="1px" width="100%" color="#E8E8E8">
-            <div class='contactForm'>
-                <h3>您的聯絡資訊</h3>
-                <form action="" method="post">
-                    <div class='formField'>
-                        <label for="name">聯絡姓名：</label>
-                        <input type="text" name="name" id="name" value="" required>
-                    </div>
-                    <div class='formField'>
-                        <label for="email">連絡信箱：</label>
-                        <input type="email" name="email" id="email" value="" required><input type="submit">
-                    </div>
-                    <div class='formField'>
-                        <label for="mobile">手機號碼：</label>
-                        <input type="text" name="phone" id="phone" value="" required>
+                    <hr class='seperator' size="1px" width="100%" color="#E8E8E8">
+
+                    <div class="billing">
+                        <h4>總價：新台幣 <span id="amount">2000</span> 元</h4>
+                        <button type="submit">確認訂購並付款</button>
                     </div>
                 </form>
-                <p>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p>
-            </div>
-            <hr class='seperator' size="1px" width="100%" color="#E8E8E8">
-            <div class='paymentArea'>
-                <h3>信用卡付款資訊</h3>
-                <form action="" method="post">
-                    <div class='formField'>
-                        <label for='cardNumber'>卡片號碼：</label>
-                        <input type="password" name="cardNumber" id="cardNo" autocomplete="off" required>
-                    </div>
-                    <div class='formField'>
-                        <label for='expirationDate'>過期時間：</label>
-                        <input type="text" name="expirationDate" id="expireDate" placeholder="MM / YY" required>
-                    </div>
-                    <div class='formField'>
-                        <label for='cardCVV'>驗證密碼：</label>
-                        <input type="text" name="cvvCode" id="cvv" placeholder="CVV" required>
-                    </div>
-                </form>
-            </div>
-            <hr class='seperator' size="1px" width="100%" color="#E8E8E8">
-    
-            <div class="billing">
-                <h4>總價：新台幣 <span id="amount">2000</span> 元</h4>
-                <button>確認訂購並付款</button>
-            </div>
-        </section>
+            </section>
 
     </main>
-<!-- Main Content -->
+    <!-- Main Content -->
 
     <footer>
         <div class='footertext'>COPYRIGHT © 2021 台北一日遊</div>
     </footer>
 
+    <script src="{{url_for('static',filename='js/booking.js')}}"></script>
 </body>
-
-<script src="{{url_for('static',filename='js/booking.js')}}"></script>
 
 </html>

@@ -101,6 +101,7 @@ function getBookingdata() {
             orderPrice.textContent=result.data["price"]
         }else{
             document.querySelector('main section').style.display='none'
+            document.querySelector('footer').style.height='100vh'
             let msgContent = document.createElement('p')
             msgContent.setAttribute('class', 'msgContent')
             msgContent.appendChild(document.createTextNode('目前沒有任何待預訂的行程'));

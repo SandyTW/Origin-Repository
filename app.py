@@ -289,7 +289,7 @@ def postBooking():
             if not (attractionId and date and time and price):
                 return jsonify({ 
                     "error": True, 
-                    "message": "建立失敗，輸入不正確或其他原因"}), 400
+                    "message": "行程建立失敗，日期輸入不正確"}), 400
             
             session["booking"] = {
                 "attractionId": attractionId,

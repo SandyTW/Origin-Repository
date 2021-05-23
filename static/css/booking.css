@@ -195,6 +195,7 @@ button{
     margin-top: 10px;
     width: 173px;
     margin-top: 0px;
+    outline:none;
 }
 
 /* footer */
@@ -325,9 +326,6 @@ footer div{
     .title{width:50%}
     main{width:90%}
     main div{width: 100%}
-    /* .bookingOrder{
-        display: block;} */
-
 }
 
 @media (max-width: 600px){
