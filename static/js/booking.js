@@ -41,6 +41,10 @@ function loginStatusCheck() {
             document.querySelector('main').style.visibility='visible'
             let username=document.getElementById('username')
             username.textContent=result.data.name
+            console.log(result.data.email)
+            let useremail=document.getElementById('email')
+            useremail.value=result.data.email
+
             document.getElementById('navLogout').style.display = 'inline-block';
             document.getElementById('navBooking').style.display = 'inline-block';
         } else {
