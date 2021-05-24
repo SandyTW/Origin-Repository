@@ -15,7 +15,7 @@
          <div class="title"><a href="/">台北一日遊</a></div>
          <div class="navbar">
             <ul>
-               <li id='navBooking'><a href="/booking">預定行程</a></li>
+               <li id='navBooking'><a onclick="openBooking()">預定行程</a></li>
                <li id='navLogin'><a onclick="openPopupForm('popUplogin')">登入/註冊</a></li>
                <li id='navLogout'><a onclick="userLogout()">登出系統</a></li>
             </ul>
@@ -29,7 +29,7 @@
       <p class='subject'>登入會員帳號</p>
       <a class='closeBtn' onclick="closePopup(this)"><img src="{{url_for('static', filename='image/icon_close.png')}}" alt='close'/></a>
       <form>
-         <input type="text" id='loginEmail' placeholder="輸入電子信箱">
+         <input type="email" id='loginEmail' placeholder="輸入電子信箱">
          <input type="password" id='loginPassword' placeholder="輸入密碼" autocomplete="off">
       </form>
       <p class='ErrorMsg' id='loginError'>帳號或密碼輸入錯誤</p>
@@ -44,7 +44,7 @@
       <a class='closeBtn' onclick="closePopup(this)"><img src="{{url_for('static', filename='image/icon_close.png')}}" alt='close'/></a>
       <form>
          <input type="text" id='registerName' placeholder="輸入姓名">
-         <input type="text" id='registerEmail' placeholder="輸入電子信箱">
+         <input type="email" id='registerEmail' placeholder="輸入電子信箱">
          <input type="password" id='registerPassword' placeholder="輸入密碼" autocomplete="off">
       </form>   
       <p class='ErrorMsg' id='registerDuplicated'>註冊失敗，此Email已被使用</p>
@@ -71,19 +71,19 @@
                      <div class='topic'>訂購導覽行程</div>
                      <p>以此景點為中心的一日行程，帶您探索城市角落故事</p>
                      <div>
-                        <span>選擇日期：</span><input type="date" required>
+                        <span>選擇日期：</span><input type="date" id='date' required>
                      </div>
                      <div>
                         <span>選擇時間：</span>
-                        <input type="radio" class='radioBtn1' id="radio1" value='forenoon' name="time" required />
+                        <input type="radio" class='radioBtn1' id="radio1" value='forenoon' name="time" checked />
                         <label class='timebutton' for="forenoon">上半天</label>
                         <input type="radio" class='radioBtn2' id="radio2" value='afternoon' name="time" />
                         <label class='timebutton' for="afternoon">下半天</label>
                      </div>
                      <div style='display:flex'>
-                        <span>導覽費用：</span><span id="charge"> 新台幣 2000 元</span>
+                        <span>導覽費用：</span><span id="ccy"> 新台幣 </span><span id="charge"> 2000 </span><span id="ccy"> 元</span>
                      </div>
-                     <button class='orderBtn'>開始預訂行程</button>
+                     <button class='orderBtn' onclick='submitOrder()'>開始預訂行程</button>
                   </div>
                </div>
              <!--  -->
@@ -97,9 +97,7 @@
             </div>
       </div>
    </main>
-
-
-
+   
    <footer>
       <div class='footertext'>COPYRIGHT © 2021 台北一日遊</div>
    </footer>

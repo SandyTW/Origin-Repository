@@ -15,7 +15,7 @@
          <div class="title"><a href="/">台北一日遊</a></div>
          <div class="navbar">
             <ul>
-               <li id='navBooking'><a href="/booking">預定行程</a></li>
+               <li id='navBooking'><a onclick="openBooking()">預定行程</a></li>
                <li id='navLogin'><a onclick="openPopupForm('popUplogin')">登入/註冊</a></li>
                <li id='navLogout'><a onclick="userLogout()">登出系統</a></li>
             </ul>
@@ -29,7 +29,7 @@
       <p class='subject'>登入會員帳號</p>
       <a class='closeBtn' onclick="closePopup(this)"><img src="{{url_for('static', filename='image/icon_close.png')}}" alt='close'/></a>
       <form>
-         <input type="text" id='loginEmail' placeholder="輸入電子信箱">
+         <input type="email" id='loginEmail' placeholder="輸入電子信箱">
          <input type="password" id='loginPassword' placeholder="輸入密碼" autocomplete="off">
       </form>
       <p class='ErrorMsg' id='loginError'>帳號或密碼輸入錯誤</p>
@@ -44,7 +44,7 @@
       <a class='closeBtn' onclick="closePopup(this)"><img src="{{url_for('static', filename='image/icon_close.png')}}" alt='close'/></a>
       <form>
          <input type="text" id='registerName' placeholder="輸入姓名">
-         <input type="text" id='registerEmail' placeholder="輸入電子信箱">
+         <input type="email" id='registerEmail' placeholder="輸入電子信箱">
          <input type="password" id='registerPassword' placeholder="輸入密碼" autocomplete="off">
       </form>   
       <p class='ErrorMsg' id='registerDuplicated'>註冊失敗，此Email已被使用</p>

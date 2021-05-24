@@ -113,11 +113,11 @@ function showslides(n){
 
 
 radio1forenoon.addEventListener('click', ()=>{
-    charge.textContent="新台幣 2000 元"
+    charge.textContent=" 2000 "
 });
 
 radio2afternoon.addEventListener('click', ()=>{
-    charge.textContent="新台幣 2500 元"
+    charge.textContent=" 2500 "
 });
 
 // 處理跳出視窗
@@ -145,6 +145,8 @@ function closePopup(e) {
     };
     document.body.classList.remove("openpopups");
     document.querySelector('.pageShadow').style.display='none';
+    document.getElementById('loginEmail').value=''
+    document.getElementById('loginPassword').value='';
 }
 
 // 註冊function
@@ -269,4 +271,57 @@ function userLogout(){
         }
     })
 }
-    
+
+// 開始預訂行程
+function submitOrder(){
+    let attractionId=parseInt(pathname.split('attraction/')[1])
+    let date=document.getElementById('date').value
+    let time=document.querySelector('input[name="time"]:checked').value
+    let price=document.getElementById('charge').textContent
+    console.log(attractionId, date, time, price)
+   
+
+    fetch('/api/booking', {
+        method:'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            "attractionId": attractionId,
+            "date": date,
+            "time": time,
+            "price": price,
+        })
+    }).then(function (response){
+        if(response.status!==500){
+            return response.json()}
+    }).then((result) => {
+        console.log(result)
+        let submitDone=result['ok']
+        let submitFailed=result['error']
+        if (submitDone){
+            window.location.href = '/booking'
+        }else if (result['message']=="未登入系統，拒絕存取"){
+            openPopupForm('popUplogin')
+        }else{
+            alert(result['message']);
+        }
+    })
+}
+
+// 預定行程
+function openBooking(){
+    fetch('/api/user', {method:'GET'}).then(function (response){
+        return response.json();
+    }).then((result) => {
+        if (result.data!==null){
+            window.location.href="/booking"
+        }else{
+            openPopupForm('popUplogin')
+        }
+    })
+}
+
+
+let today = new Date().toISOString().split('T')[0]; 
+document.getElementById("date").setAttribute('min', today); 

@@ -157,7 +157,6 @@ main{
 }
 
 
-
 .profile{
     width:600px;
     padding: 15px;
@@ -196,13 +195,10 @@ main{
 .bookingform span{
     font-weight: bold;
 }
-.radioBtn{
-    width: 22px;
-    height: 22px;
-    display: inline-block;
-    vertical-align:bottom;
-}
 
+.timebutton{
+    font-weight: 400;
+}
 input[type='date']{
     outline: none;
     padding-left: 10px;
@@ -245,10 +241,7 @@ input[type='radio'] {
     border: 2px solid white;
   }
   
-
-
-
-#charge{
+#charge, #ccy{
     font-weight: normal;
 }
 .orderBtn{
@@ -345,6 +338,7 @@ footer div{
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-bottom: 10px;
+    outline: none;
 }
 
 .popBtn{
@@ -420,8 +414,6 @@ footer div{
     }
     .profile{width: 94.5%;}
     .spotDetails{width: 94.5%;}
-
-
 }
 
 @media (max-width: 600px){

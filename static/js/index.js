@@ -11,7 +11,7 @@ window.addEventListener('scroll', debounce(scrolling, 200));
 function getAttractions(page, keyword) {
     if (keyword) {
         apiUrl = `/api/attractions?page=${page}&keyword=${keyword}`;
-    } else {
+    }else {
         apiUrl = `/api/attractions?page=${page}`;
     }
     console.log(apiUrl);
@@ -66,9 +66,6 @@ function dataProcessing(data) {
             attractionContainer.appendChild(id);
             attractionContainer.appendChild(textBox);
             document.getElementById('picSection').appendChild(attractionContainer);
-
-
-
         }
     } else {
         let attractionContainer = document.createElement('div');
@@ -162,6 +159,8 @@ function closePopup(e) {
     };
     document.body.classList.remove("openpopups");
     document.querySelector('.pageShadow').style.display='none';
+    document.getElementById('loginEmail').value=''
+    document.getElementById('loginPassword').value='';
 }
 
 // 註冊function
@@ -287,6 +286,17 @@ function userLogout(){
     })
 }
     
+// 預定行程
+function openBooking(){
+    fetch('/api/user', {method:'GET'}).then(function (response){
+        return response.json();
+    }).then((result) => {
+        if (result.data!==null){
+            window.location.href="/booking"
+        }else{
+            openPopupForm('popUplogin')
+        }
+    })
+}
 
 
-   
