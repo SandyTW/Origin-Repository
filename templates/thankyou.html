@@ -58,7 +58,7 @@
     <!-- main -->
     <main>
         <div class='orderDetails'>
-            <div class='headline'>完成付款！您的訂單明細如下：</div>
+            <div class='headline'>您的訂單明細如下：</div>
             
             <table>
                 <thead>
@@ -80,6 +80,13 @@
             </table>
 
             <p>※請列印『訂單明細』或記下訂單編號，以利後續查詢使用。</p>
+
+            <div class='headline'>訂單查詢</div>
+            <form class="Search">
+                <input tpye='text' class='searchData' id='orderNo' placeholder='輸入訂單編號查詢' required />
+                <button type='submit' class='searchBtn' onclick='searchOrder(event)'>查詢
+                </button>
+            </form>
         </div>
     </main>
     <!-- Main Content -->

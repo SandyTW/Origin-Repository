@@ -249,7 +249,7 @@ def getBooking():
                 date = session["booking"]['date']
                 time = session["booking"]['time']
                 price = session["booking"]['price']
-                print(session["booking"]["time"])
+                
                 cursor.execute("SELECT * FROM TaipeiTravel WHERE id=%s", (attractionId,))
                 results = cursor.fetchall()
 
@@ -447,9 +447,7 @@ def orderNumber(orderNumber):
         result = record.json()
         
         if result["number_of_transactions"]==0:
-            return jsonify({
-                "error": True, 
-                "message": "查無紀錄"})
+            return {"data": None}
 
         #record_status: 0-銀行已授權交易，但尚未請款; 1 - 交易完成; 4 - 待付款
         if result["trade_records"][0]["record_status"] == 1:

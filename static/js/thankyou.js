@@ -35,6 +35,7 @@ function loginStatusCheck() {
     }).then((result) => {
         console.log(result.data);
         if (result.data !== null) {
+            userDetails(result.data);
             getOrderdata()
             // document.getElementById('navLogin').style.display = 'none';
             document.querySelector('main').style.visibility = 'visible'
@@ -48,7 +49,13 @@ function loginStatusCheck() {
 };
 loginStatusCheck();
 
-
+function userDetails(data){
+    userDetails={
+        "id": data["id"],
+        "name": data["name"],
+        "email": data["email"]
+    }
+};
 // 登出流程 (if user logout, redirect to home page)
 function userLogout() {
     fetch('/api/user', { method: 'DELETE' }).then(function (response) {
@@ -68,13 +75,12 @@ function userLogout() {
 }
 
 
-let Url = new URL(location.href);
-    let orderNumber = Url.searchParams.get('number')
-    console.log(orderNumber)
-    apiUrl= `/api/order/${orderNumber}`;
-    console.log(apiUrl)
+
 function getOrderdata() {
-    
+    let Url = new URL(location.href);
+    let orderNumber = Url.searchParams.get('number', null)
+    // console.log(orderNumber)
+    apiUrl= `/api/order/${orderNumber}`;
 
     fetch( apiUrl, { method: 'GET' }).then(function (response) {
         return response.json();
@@ -89,7 +95,7 @@ function getOrderdata() {
 
             let date = document.getElementById('date')
             let  orderdate = JSON.stringify(new Date(result.data["trip"]["date"]))
-            console.log(orderdate)
+            // console.log(orderdate)
             date.textContent = orderdate.slice(1,11)
 
             let time = document.getElementById('time')
@@ -102,8 +108,39 @@ function getOrderdata() {
             let price =document.getElementById('orderAmount')
             price.textContent = 'NT$ ' + result.data["price"]
 
+            let status =document.getElementById('orderStatus')
+            status.textContent = "已付款"
+        };
+        if (result.data == null) {
+            let orderNumber = document.getElementById('orderNumber')
+            orderNumber.textContent = "---"
 
+            let orderName = document.getElementById('orderName')
+            orderName.textContent = "---"
+
+            let date = document.getElementById('date')
+            date.textContent = "---"
+
+            let time = document.getElementById('time')
+            time.textContent = "---"
+
+            let price =document.getElementById('orderAmount')
+            price.textContent = "---"
+
+            let status =document.getElementById('orderStatus')
+            status.textContent = "---"
         }
     });
 }
     
+function searchOrder(event){
+    event.preventDefault();
+    let orderNo = document.getElementById('orderNo').value;
+    let verifyID = orderNo.split('-')[1]
+
+    if (verifyID==userDetails['id']){
+        window.location.href = `/thankyou?number=${orderNo}`
+    }else{
+        window.location.href = `/thankyou`
+    }
+}

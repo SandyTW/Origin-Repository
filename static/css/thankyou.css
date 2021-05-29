@@ -85,13 +85,14 @@ main div p{
     font-size: 19px;
     padding-top: 46px;
     margin: 0;
+    margin-bottom: 25px;
 }
 
 /* order */
 table {
     border-spacing: 0;
     width: 100%;
-    margin-top:30px;
+    /* margin-top:30px; */
     line-height: 1.8;
     border-collapse: collapse;
 }
@@ -242,6 +243,7 @@ footer div{
     .navbar ul li{margin-right:5px}
     main{width:90%}
     main div{width: 100%}
+    form{width:100%}
     
     table,
     thead,
@@ -281,3 +283,32 @@ footer div{
     td:nth-of-type(6):before { content: "付款狀態"; }
 }
 
+
+  /*  */
+  .searchData{
+    width: 25%;
+    min-width: 200px;
+    border: 3px solid #448899;
+    border-right: none;
+    padding: 5px;
+    height: 20px;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+  }
+  .searchBtn {
+    border: 1px solid #448899;
+    background:#448899;
+    text-align: center;
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 16px;
+    width: 6%;
+    min-width: 80px;
+  }
+  .Search{
+    width: 100%;
+    position: relative;
+    display: flex;
+  }
+  
