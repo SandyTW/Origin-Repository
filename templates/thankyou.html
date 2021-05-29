@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>台北一日遊 - 訂單頁面</title>
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/thankyou.css')}}">
+</head>
+
+<body>
+    <header>
+        <div class="navigation">
+            <div class="title"><a href="/">台北一日遊</a></div>
+            <div class="navbar">
+                <ul>
+                    <li id='navBooking'><a href='/'>預定行程</a></li>
+                    <!-- <li id='navLogin'><a onclick="openPopupForm('popUplogin')">登入/註冊</a></li> -->
+                    <li id='navLogout'><a onclick="userLogout()">登出系統</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Popups Forms -->
+    <div class='popUp' id='popUplogin'>
+        <span></span>
+        <p class='subject'>登入會員帳號</p>
+        <a class='closeBtn' onclick="closePopup(this)"><img src="{{url_for('static', filename='image/icon_close.png')}}"
+                alt='close' /></a>
+        <form>
+            <input type="email" id='loginEmail' placeholder="輸入電子信箱">
+            <input type="password" id='loginPassword' placeholder="輸入密碼" autocomplete="off">
+        </form>
+        <p class='ErrorMsg' id='loginError'>帳號或密碼輸入錯誤</p>
+        <p class='Msg' id='loginResult'></p>
+        <button class=popBtn onclick='userLogin()'>登入帳戶</button>
+        <a class='registerBtn' onclick='openRegister()'>還沒有帳戶？點此註冊</a>
+    </div>
+
+    <div class='popUp' id='popUpRegister'>
+        <span></span>
+        <p class='subject'>註冊會員帳號</p>
+        <a class='closeBtn' onclick="closePopup(this)"><img src="{{url_for('static', filename='image/icon_close.png')}}"
+                alt='close' /></a>
+        <form>
+            <input type="text" id='registerName' placeholder="輸入姓名">
+            <input type="email" id='registerEmail' placeholder="輸入電子信箱">
+            <input type="password" id='registerPassword' placeholder="輸入密碼" autocomplete="off">
+        </form>
+        <p class='ErrorMsg' id='registerDuplicated'>註冊失敗，此Email已被使用</p>
+        <p class='Msg' id='registerResult'></p>
+        <button class='popBtn' onclick='newRegister()'>註冊新帳戶</button>
+        <a class='loginBtn' onclick="openPopupForm('popUplogin')">已經有帳戶了？點此登入</a>
+    </div>
+    <div class="pageShadow" onclick="closePopup(this)"></div>
+    <!-- main -->
+    <main>
+        <div class='orderDetails'>
+            <div class='headline'>完成付款！您的訂單明細如下：</div>
+            
+            <table>
+                <thead>
+                  <th>訂單編號</th>
+                  <th>行程資訊</th>
+                  <th>行程日期</th>
+                  <th>行程時間</th>
+                  <th>訂單金額</th>
+                  <th>付款狀態</th>
+                </thead>
+                <tr>
+                    <td id='orderNumber'></td>
+                    <td id='orderName'></td>
+                    <td id='date'></td>
+                    <td id='time'></td>
+                    <td id='orderAmount'></td>
+                    <td id='orderStatus'></td>
+                  </tr>
+            </table>
+
+            <p>※請列印『訂單明細』或記下訂單編號，以利後續查詢使用。</p>
+        </div>
+    </main>
+    <!-- Main Content -->
+
+    <footer>
+        <div class='footertext'>COPYRIGHT © 2021 台北一日遊</div>
+    </footer>
+
+    <script src="{{url_for('static',filename='js/thankyou.js')}}"></script>
+</body>
+
+</html>

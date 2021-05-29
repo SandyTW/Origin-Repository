@@ -14,7 +14,7 @@ function getAttractionData(){
     fetch(apiUrl).then(function (response) {
         return response.json();
     }).then((rawData) => {
-        console.log(rawData);
+        // console.log(rawData);
         attrDataProcessing(rawData.data);
         attrImgProcessing(rawData.data);
         showslides(slideIndex);
@@ -278,9 +278,8 @@ function submitOrder(){
     let date=document.getElementById('date').value
     let time=document.querySelector('input[name="time"]:checked').value
     let price=document.getElementById('charge').textContent
-    console.log(attractionId, date, time, price)
+    // console.log(attractionId, date, time, price)
    
-
     fetch('/api/booking', {
         method:'POST',
         headers: {
@@ -296,7 +295,7 @@ function submitOrder(){
         if(response.status!==500){
             return response.json()}
     }).then((result) => {
-        console.log(result)
+        // console.log(result)
         let submitDone=result['ok']
         let submitFailed=result['error']
         if (submitDone){
