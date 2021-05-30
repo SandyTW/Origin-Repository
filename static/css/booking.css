@@ -153,9 +153,29 @@ main div{
 form input{
     color:#757575;
     font-size: 16px;
+    line-height: 13px;
+    outline: none;
+}
+
+input{
+    border-radius: 5px;
+    padding: 10px;
+    border: 1px solid #E8E8E8;
+    width: 177.75px;
+}
+
+.tpfield{
+    width: 177.75px;
+    height: 18.67px;
+    border: 1px solid #E8E8E8;
+    border-radius: 5px;
+    padding: 10px;
+    color: #757575;
     font-size: 16px;
     line-height: 13px;
     outline: none;
+    text-align: center;
+    margin-left: 0;
 }
 .contactForm p{
     margin-top:20px;
@@ -179,13 +199,6 @@ form input{
     font-size: 16px;
 }
 
-input{
-    border-radius: 5px;
-    padding: 10px;
-    border: 1px solid #E8E8E8;
-    width: 177.75px;
-}
-
 button{
     background-color: #448899;
     border: transparent;
@@ -199,20 +212,6 @@ button{
     outline:none;
 }
 
-
-.tpfield{
-    width: 177.75px;
-    height: 18.67px;
-    border: 1px solid #E8E8E8;
-    border-radius: 5px;
-    padding: 10px;
-    color: #757575;
-    font-size: 16px;
-    line-height: 13px;
-    outline: none;
-    text-align: center;
-    margin-left: 0;
-}
 
 /* footer */
 footer{

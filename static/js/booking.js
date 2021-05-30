@@ -218,7 +218,8 @@ function getPrime(event) {
     event.preventDefault()
     // 取得 TapPay Fields 的 status
     const tappayStatus = TPDirect.card.getTappayFieldsStatus()
-    // console.log(tappayStatus)
+    console.log(tappayStatus)
+
     // 確認是否可以 getPrime (if canGetPrime (boolean) = true 全部欄位皆正確，可呼叫 getPrime)
     if (tappayStatus.canGetPrime === false) {
         console.log('can not get prime')
@@ -259,10 +260,16 @@ function postOrder(prime) {
     }).then(function (response) {
         return response.json()
     }).then((result) => {
-        console.log(result["data"]["payment"]["status"])
+        console.log(result)
+        if (result['error']){
+            alert(result['message']);
+        }
+      
         if (result["data"]["payment"]["status"] == 0){
             let orderNumber = result["data"]["number"];
             window.location.href = `/thankyou?number=${orderNumber}`
+        }else{
+            alert(result["data"]['payment']['message'] + "\r\n" + "\r\n" + result["data"]['number'])
         }
     }).catch(function(err){
         console.log(err)

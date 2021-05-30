@@ -343,7 +343,7 @@ def postOrder():
         if not (request.get_json()["contact"]["name"] and request.get_json()["contact"]["email"] and request.get_json()["contact"]["phone"]):
             return jsonify({ 
                     "error": True, 
-                    "message": "訂單建立失敗，輸入不正確"}), 400
+                    "message": "訂單建立失敗，聯絡資訊不完整"}), 400
 
         price = request.get_json()["order"]["price"]
         userID = session["user"]["id"]
@@ -402,7 +402,7 @@ def postOrder():
             }), 200
         else:
             status = data["status"] #【付款失敗】
-            cursor.execute('UPDATE orderEntry SET bank_transaction_id = %s, status = %s WHERE order_number = %s', (data["bank_transaction_id"], status, orderNumber,))
+            cursor.execute('UPDATE orderEntry SET status = %s WHERE order_number = %s', (status, orderNumber,))
             mydb.commit()
 
             cursor.execute('SELECT * FROM orderEntry WHERE order_number = %s', (orderNumber,))
@@ -413,10 +413,10 @@ def postOrder():
                     "number": extractData["order_number"],
                     "payment": {
                         "status": extractData["status"],
-                        "message": "付款失敗"
+                        "message": "付款失敗，請聯絡客服並提供以下編號"
                     }   
                 }
-            }), 400
+            }), 200
     except Exception as err:
         print(err)
         return jsonify({
