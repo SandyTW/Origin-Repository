@@ -3,6 +3,8 @@ from flask import *
 import json
 import mysql.connector
 import os
+import requests
+import datetime
 from dotenv import load_dotenv
 
 
@@ -247,7 +249,7 @@ def getBooking():
                 date = session["booking"]['date']
                 time = session["booking"]['time']
                 price = session["booking"]['price']
-
+                
                 cursor.execute("SELECT * FROM TaipeiTravel WHERE id=%s", (attractionId,))
                 results = cursor.fetchall()
 
@@ -264,6 +266,7 @@ def getBooking():
                         "time": time,
                         "price": price
                 }
+                
                 return jsonify({"data": data}), 200
         else:
             return jsonify({
@@ -297,7 +300,7 @@ def postBooking():
                 "time": time,
                 "price": price,
             }
-            print(session['booking'])            
+            # print(session['booking'])            
             return jsonify({ "ok": True }), 200
         else:
             return jsonify({
@@ -328,7 +331,187 @@ def deleteBooking():
             "message": "伺服器內部錯誤"}), 500
 
 
+#建立新的訂單，並完成付款程序
+@app.route("/api/orders", methods=["POST"])
+def postOrder():
+    try:
+        if 'user' not in session:
+            return jsonify({
+                "error": True, 
+                "message": "未登入系統，拒絕存取"}), 403
 
+        if not (request.get_json()["contact"]["name"] and request.get_json()["contact"]["email"] and request.get_json()["contact"]["phone"]):
+            return jsonify({ 
+                    "error": True, 
+                    "message": "訂單建立失敗，聯絡資訊不完整"}), 400
+
+        price = request.get_json()["order"]["price"]
+        userID = session["user"]["id"]
+        phone = request.get_json()["contact"]["phone"]
+        attractionID = session["booking"]["attractionId"]
+        date = request.get_json()["order"]["trip"]["date"]
+        time = request.get_json()["order"]["trip"]["time"]
+    
+
+        #後端建立訂單編號和資料，紀錄訂單付款狀態為【未付款】
+        now = datetime.datetime.now()
+        orderNumber = now.strftime("%Y%m%d%H%M%S-") + str(userID)
+        status = 1  #1【未付款】
+        
+        cursor.execute('INSERT INTO orderEntry VALUES (default, %s, default, %s, %s, %s, %s, %s, %s, %s, default)', (orderNumber, price, userID, phone, attractionID, date, time, status))
+        mydb.commit()
+
+        url = 'https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime'
+        headers = {
+            "content-type": 'application/json',
+            "x-api-key": 'partner_RU1bOYgVnvLvJmLhliwqdudmUoA5xo1UzjDWnbiI3h4GsFzSTUU5fO9v'
+        }
+        tappayData = json.dumps({
+            "prime": request.get_json()["prime"],
+            "partner_key": "partner_RU1bOYgVnvLvJmLhliwqdudmUoA5xo1UzjDWnbiI3h4GsFzSTUU5fO9v",
+            "merchant_id": "PadaProject_TAISHIN",
+            "details": "TapPay Test",
+            "amount": request.get_json()["order"]["price"],
+            "order_number": orderNumber,
+            "cardholder": {
+                "phone_number": request.get_json()["contact"]["phone"],
+                "name": request.get_json()["contact"]["name"],
+                "email": request.get_json()["contact"]["email"],
+            }
+        })
+        response = requests.post(url = url, data = tappayData, headers = headers)
+        data = response.json()
+        print(data)
+    
+        if data["status"]==0:
+            status = data["status"]  #【付款成功】
+            cursor.execute('UPDATE orderEntry SET bank_transaction_id = %s, status = %s WHERE order_number = %s', (data["bank_transaction_id"], status, orderNumber,))
+            mydb.commit()
+
+            cursor.execute('SELECT * FROM orderEntry WHERE order_number = %s', (orderNumber,))
+            extractData=cursor.fetchone()
+
+            return jsonify ({
+                "data": {
+                    "number": extractData["order_number"],
+                    "payment": {
+                        "status": extractData["status"],
+                        "message": "付款成功"
+                    }
+                }
+            }), 200
+        else:
+            status = data["status"] #【付款失敗】
+            cursor.execute('UPDATE orderEntry SET status = %s WHERE order_number = %s', (status, orderNumber,))
+            mydb.commit()
+
+            cursor.execute('SELECT * FROM orderEntry WHERE order_number = %s', (orderNumber,))
+            extractData=cursor.fetchone()
+
+            return jsonify ({
+                "data": {
+                    "number": extractData["order_number"],
+                    "payment": {
+                        "status": extractData["status"],
+                        "message": "付款失敗，請聯絡客服並提供以下編號"
+                    }   
+                }
+            }), 200
+    except Exception as err:
+        print(err)
+        return jsonify({
+            "error": True, 
+            "message": "伺服器內部錯誤"}), 500
+
+#根據訂單編號取得訂單資訊
+@app.route('/api/order/<orderNumber>',methods=["GET"])
+def orderNumber(orderNumber):
+    try:
+        if 'user' not in session:
+            return jsonify({
+                "error": True, 
+                "message": "未登入系統，拒絕存取"}), 403
+        
+        url = 'https://sandbox.tappaysdk.com/tpc/transaction/query'
+        headers = {
+            "content-type": 'application/json',
+            "x-api-key": 'partner_RU1bOYgVnvLvJmLhliwqdudmUoA5xo1UzjDWnbiI3h4GsFzSTUU5fO9v'
+        }
+        queryData = json.dumps({
+            "partner_key": "partner_RU1bOYgVnvLvJmLhliwqdudmUoA5xo1UzjDWnbiI3h4GsFzSTUU5fO9v",
+            "filters": {
+                "order_number": orderNumber
+            }
+        })
+        record = requests.post(url = url, data = queryData, headers = headers)
+        result = record.json()
+        
+        if result["number_of_transactions"]==0:
+            return {"data": None}
+
+        #record_status: 0-銀行已授權交易，但尚未請款; 1 - 交易完成; 4 - 待付款
+        if result["trade_records"][0]["record_status"] == 1:
+            cursor.execute("SELECT orderEntry.order_number, orderEntry.bank_transaction_id, orderEntry.date, orderEntry.time, orderEntry.price, orderEntry.attraction_id, TaipeiTravel.name, TaipeiTravel.address, TaipeiTravel.images FROM orderEntry INNER JOIN TaipeiTravel on orderEntry.attraction_id = TaipeiTravel.id WHERE order_number=%s", (orderNumber,))
+            tripResults = cursor.fetchall()
+            
+            for tripResult in tripResults:
+                data = {
+                    "number": orderNumber,
+                    "price": result["trade_records"][0]["amount"],
+                    "trip": {
+                        "attraction": {
+                            "id": tripResult["attraction_id"],
+                            "name": tripResult["name"],
+                            "address": tripResult["address"],
+                            "image": tripResult["images"].split(",")[:-1][0],
+                        },
+                        "date": tripResult["date"],
+                        "time": tripResult["time"]
+                    },
+                    "contact": {
+                    "name": result["trade_records"][0]["cardholder"]["name"],
+                    "email": result["trade_records"][0]["cardholder"]["email"],
+                    "phone": result["trade_records"][0]["cardholder"]["phone_number"],
+                    },
+                    "status":"1-交易完成"
+                }            
+            return jsonify({
+                "data": data }), 200
+
+        if result["trade_records"][0]["record_status"] == 0:
+            cursor.execute("SELECT orderEntry.order_number, orderEntry.bank_transaction_id, orderEntry.date, orderEntry.time, orderEntry.price, orderEntry.attraction_id, TaipeiTravel.name, TaipeiTravel.address, TaipeiTravel.images FROM orderEntry INNER JOIN TaipeiTravel on orderEntry.attraction_id = TaipeiTravel.id WHERE order_number=%s", (orderNumber,))
+            tripResults = cursor.fetchall()
+            
+            for tripResult in tripResults:
+                data = {
+                    "number": orderNumber,
+                    "price": result["trade_records"][0]["amount"],
+                    "trip": {
+                        "attraction": {
+                            "id": tripResult["attraction_id"],
+                            "name": tripResult["name"],
+                            "address": tripResult["address"],
+                            "image": tripResult["images"].split(",")[:-1][0],
+                        },
+                        "date": tripResult["date"],
+                        "time": tripResult["time"]
+                    },
+                    "contact": {
+                    "name": result["trade_records"][0]["cardholder"]["name"],
+                    "email": result["trade_records"][0]["cardholder"]["email"],
+                    "phone": result["trade_records"][0]["cardholder"]["phone_number"],
+                    },
+                    "status":"1-交易完成"
+                }            
+            return jsonify({
+                "data": data }), 200
+           
+    except Exception as err:
+        print(err)
+        return jsonify({
+            "error": True, 
+            "message": "伺服器內部錯誤"}), 500
+    
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=3000, debug=True)
