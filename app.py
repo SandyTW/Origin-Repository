@@ -21,7 +21,7 @@ mydb = mysql.connector.connect(
     host=os.getenv("DBHOST"),
     user=os.getenv("DBUSER"),
     password=os.getenv("DBPASSWORD"),
-    database="travel",
+    database=os.getenv("DBDATABSE"),
 )
 mydb.ping(reconnect=True, attempts=1, delay=0)
 
@@ -364,11 +364,11 @@ def postOrder():
         url = 'https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime'
         headers = {
             "content-type": 'application/json',
-            "x-api-key": 'partner_RU1bOYgVnvLvJmLhliwqdudmUoA5xo1UzjDWnbiI3h4GsFzSTUU5fO9v'
+            "x-api-key": os.getenv("TAPPAY_partner_key"),
         }
         tappayData = json.dumps({
             "prime": request.get_json()["prime"],
-            "partner_key": "partner_RU1bOYgVnvLvJmLhliwqdudmUoA5xo1UzjDWnbiI3h4GsFzSTUU5fO9v",
+            "partner_key": os.getenv("TAPPAY_partner_key"),
             "merchant_id": "PadaProject_TAISHIN",
             "details": "TapPay Test",
             "amount": request.get_json()["order"]["price"],
@@ -435,10 +435,10 @@ def orderNumber(orderNumber):
         url = 'https://sandbox.tappaysdk.com/tpc/transaction/query'
         headers = {
             "content-type": 'application/json',
-            "x-api-key": 'partner_RU1bOYgVnvLvJmLhliwqdudmUoA5xo1UzjDWnbiI3h4GsFzSTUU5fO9v'
+            "x-api-key": os.getenv("TAPPAY_partner_key"),
         }
         queryData = json.dumps({
-            "partner_key": "partner_RU1bOYgVnvLvJmLhliwqdudmUoA5xo1UzjDWnbiI3h4GsFzSTUU5fO9v",
+            "partner_key": os.getenv("TAPPAY_partner_key"),
             "filters": {
                 "order_number": orderNumber
             }
