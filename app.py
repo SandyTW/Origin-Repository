@@ -6,6 +6,7 @@ import os
 import requests
 import datetime
 from dotenv import load_dotenv
+from mysql.connector import pooling
 
 
 app = Flask(__name__)
@@ -15,22 +16,43 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = os.urandom(24)
 
+# take environment variables from .env.
+load_dotenv()  
 
-load_dotenv()  # take environment variables from .env.
-mydb = mysql.connector.connect(
+# use a connection pool with MySQL
+connection_pool = pooling.MySQLConnectionPool(
+    pool_name="TaipeiTravelpool",
+    pool_size=5,
+    pool_reset_session=True,
     host=os.getenv("DBHOST"),
     user=os.getenv("DBUSER"),
     password=os.getenv("DBPASSWORD"),
     database=os.getenv("DBDATABSE"),
 )
-mydb.ping(reconnect=True, attempts=1, delay=0)
 
-if (mydb.is_connected()):
+# Get connection obj. from a pool
+connection_object = connection_pool.get_connection()
+if connection_object.is_connected():
     print("Connected")
 else:
     print("Not connected")
-mycursor = mydb.cursor()
-cursor = mydb.cursor(dictionary=True)
+cursor = connection_object.cursor(dictionary=True)
+
+
+# mydb = mysql.connector.connect(
+#     host=os.getenv("DBHOST"),
+#     user=os.getenv("DBUSER"),
+#     password=os.getenv("DBPASSWORD"),
+#     database=os.getenv("DBDATABSE"),
+# )
+# mydb.ping(reconnect=True, attempts=1, delay=0)
+
+# if (mydb.is_connected()):
+#     print("Connected")
+# else:
+#     print("Not connected")
+# mycursor = mydb.cursor()
+# cursor = mydb.cursor(dictionary=True)
 
 
 # Pages
@@ -198,11 +220,16 @@ def getAttractions():
                 "data": spotList
             }
             return jsonify(SearchResult), 200
-    except:
+    # except:
+    #     return jsonify({
+    #         "error": True,
+    #         "message": "伺服器內部錯誤"
+    #     }), 500
+    except Exception as err:
+        print(err)
         return jsonify({
-            "error": True,
-            "message": "伺服器內部錯誤"
-        }), 500
+            "error": True, 
+            "message": "伺服器內部錯誤"}), 500
 
 
 @app.route('/api/attraction/<attractionId>')
