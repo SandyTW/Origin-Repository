@@ -211,7 +211,7 @@ def getAttractions():
 
             if len(spotList) < 12:
                 nextpage = None
-                print(len(spotList))
+                # print(len(spotList))
             else:
                 nextpage = page+1
 

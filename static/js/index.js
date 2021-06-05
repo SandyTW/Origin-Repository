@@ -79,7 +79,6 @@ function dataProcessing(data) {
         document.getElementById('picSection').appendChild(attractionContainer);
         
         let AttrBox = document.getElementById('attractionContent');
-
         let noResult = document.createElement('div')
         noResult.classList.add('noData');
         noResult.appendChild(document.createTextNode('查無資訊'));
