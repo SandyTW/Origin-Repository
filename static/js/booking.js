@@ -206,6 +206,7 @@ TPDirect.card.onUpdate(update => {
     if (update.canGetPrime) {
         // Enable submit Button to get prime.
         orderButton.removeAttribute('disabled');
+        orderButton.style.cursor='pointer';
     } else {
         // Disable submit Button to get prime.
         orderButton.setAttribute('disabled', true);
