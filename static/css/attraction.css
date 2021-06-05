@@ -253,6 +253,7 @@ input[type='radio'] {
     font-size: 19px;
     outline: none;
     margin-top:17.5px;
+    cursor: pointer;
 }
 .spotDetails{
     color: #666666;

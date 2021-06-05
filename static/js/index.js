@@ -5,8 +5,13 @@ let apiUrl;
 
 getAttractions(page, keyword);
 
-window.addEventListener('scroll', debounce(scrolling, 200));
 // window.addEventListener('scroll', scrolling);
+window.addEventListener('scroll', debounce(scrolling, 200));
+
+// function hideloading(){
+//     document.querySelector('.loader').style.display='none'
+
+// }
 
 function getAttractions(page, keyword) {
     if (keyword) {
@@ -100,7 +105,7 @@ function loading() {
         page = nextPage;
         keyword=document.getElementById('wordforsearch').value;
         console.log(page, keyword);
-        getAttractions(page, keyword);
+        getAttractions(page, keyword);   
     }
 };
 
@@ -298,5 +303,3 @@ function openBooking(){
         }
     })
 }
-
-

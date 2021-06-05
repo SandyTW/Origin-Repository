@@ -111,7 +111,7 @@ def userRegister():
             }), 400
         else:
             cursor.execute('INSERT INTO user VALUES (default, %s, %s, %s, default)', (name, email, password))
-            mydb.commit()
+            connection_object.commit()
             return jsonify({ 
                 "ok": True 
             }), 200
@@ -386,7 +386,7 @@ def postOrder():
         status = 1  #1【未付款】
         
         cursor.execute('INSERT INTO orderEntry VALUES (default, %s, default, %s, %s, %s, %s, %s, %s, %s, default)', (orderNumber, price, userID, phone, attractionID, date, time, status))
-        mydb.commit()
+        connection_object.commit()
 
         url = 'https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime'
         headers = {
@@ -413,7 +413,7 @@ def postOrder():
         if data["status"]==0:
             status = data["status"]  #【付款成功】
             cursor.execute('UPDATE orderEntry SET bank_transaction_id = %s, status = %s WHERE order_number = %s', (data["bank_transaction_id"], status, orderNumber,))
-            mydb.commit()
+            connection_object.commit()
 
             cursor.execute('SELECT * FROM orderEntry WHERE order_number = %s', (orderNumber,))
             extractData=cursor.fetchone()
@@ -430,7 +430,7 @@ def postOrder():
         else:
             status = data["status"] #【付款失敗】
             cursor.execute('UPDATE orderEntry SET status = %s WHERE order_number = %s', (status, orderNumber,))
-            mydb.commit()
+            connection_object.commit()
 
             cursor.execute('SELECT * FROM orderEntry WHERE order_number = %s', (orderNumber,))
             extractData=cursor.fetchone()
