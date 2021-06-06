@@ -376,6 +376,7 @@ footer div{
     height: 50px;
     position: relative;
     left: 50%;
+    display: none;
     /* position: absolute;
     left: 50%; */
     /* display:none; */

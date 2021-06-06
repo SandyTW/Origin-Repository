@@ -8,10 +8,12 @@ getAttractions(page, keyword);
 // window.addEventListener('scroll', scrolling);
 window.addEventListener('scroll', debounce(scrolling, 200));
 
-// function hideloading(){
-//     document.querySelector('.loader').style.display='none'
-
-// }
+function hideloader(){
+    document.querySelector('.loader').style.display='none'
+}
+function showloader(){
+    document.querySelector('.loader').style.display='block'
+}
 
 function getAttractions(page, keyword) {
     if (keyword) {
@@ -19,13 +21,21 @@ function getAttractions(page, keyword) {
     }else {
         apiUrl = `/api/attractions?page=${page}`;
     }
-    console.log(apiUrl);
+    // console.log(apiUrl);
+    document.querySelector('.searchData').style.boxShadow='none'
     fetch(apiUrl).then(function (response) {
+        showloader();
         return response.json();
     }).then((rawData) => {
         console.log(rawData);
         nextPage = rawData['nextPage'];
-        dataProcessing(rawData);
+        if (nextPage === null){
+            hideloader()
+            dataProcessing(rawData);
+        }else{
+            dataProcessing(rawData);
+        }
+        // dataProcessing(rawData);
     });
 };
 
@@ -84,6 +94,8 @@ function dataProcessing(data) {
         noResult.appendChild(document.createTextNode('查無資訊'));
         console.log(noResult);
         AttrBox.appendChild(noResult);
+        nextPage=null;
+        hideloader();
     }
 };
 
@@ -100,6 +112,7 @@ function scrolling() {
 
 
 function loading() {
+    console.log(nextPage)
     if (nextPage !== null) {
         page = nextPage;
         keyword=document.getElementById('wordforsearch').value;
@@ -125,16 +138,23 @@ function debounce(func, delay) {
 // 處理 search attractions by keyword
 function searchAttraction(event) {
     event.preventDefault();
-    while (document.getElementById('attractionContent')) {
-        document.getElementById('attractionContent').remove();
-    };
     let keyword = document.getElementById('wordforsearch').value;
     page = 0;
-    if (keyword==''){
-        return false;
-    }else{
+    // if (keyword==''){
+    //     return false;
+    // }else{
+    //     console.log(keyword);
+    //     getAttractions(page, keyword);
+    // }
+    if (keyword){
+        while (document.getElementById('attractionContent')) {
+            document.getElementById('attractionContent').remove();
+        };
         console.log(keyword);
         getAttractions(page, keyword);
+    } else{
+        document.querySelector('.searchData').style.boxShadow = 'inset 1px 1px 8px 3px #f95d';
+        return false
     }
 };
 
