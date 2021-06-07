@@ -108,6 +108,7 @@ main{
     opacity: 0.7;
     outline:none;
     cursor: pointer;
+    z-index: 1;
 }
 .rightArrow{
     position: absolute;
@@ -118,6 +119,7 @@ main{
     opacity: 0.7;
     outline:none;
     cursor: pointer;
+    z-index: 1
 }
 
 .leftArrow:hover, .rightArrow:hover{
@@ -134,6 +136,7 @@ main{
     bottom: 6%;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 1;
 }
 
 .ball{
@@ -253,6 +256,7 @@ input[type='radio'] {
     font-size: 19px;
     outline: none;
     margin-top:17.5px;
+    cursor: pointer;
 }
 .spotDetails{
     color: #666666;
@@ -405,15 +409,29 @@ footer div{
     }
     #left-btn{
         position: absolute;
-        /* left: 15px; */
     }
     #right-btn{
         position: absolute;
-        /* right: 10px; */
     }
     .profile{width: 94.5%;}
     .spotDetails{width: 94.5%;}
 }
+
+#fade{
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 1.35s;
+    animation-name: fade;
+    animation-duration: 1.35s;
+}
+@-webkit-keyframes fade {
+	from {opacity: 0.35} 
+	to {opacity: 1}
+}
+@keyframes fade {
+	from {opacity: 0.35} 
+	to {opacity: 1}
+}
+
 
 @media (max-width: 600px){
     .navbar ul li{margin-right:5px}

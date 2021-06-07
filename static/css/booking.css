@@ -136,6 +136,7 @@ main div{
     width: 30px;
     float: right;
     margin-bottom: 25px;
+    cursor: pointer;
 }
 .contactForm{
     padding: 37px 0px;

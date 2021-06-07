@@ -6,6 +6,7 @@ import os
 import requests
 import datetime
 from dotenv import load_dotenv
+from mysql.connector import pooling
 
 
 app = Flask(__name__)
@@ -15,22 +16,43 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = os.urandom(24)
 
+# take environment variables from .env.
+load_dotenv()  
 
-load_dotenv()  # take environment variables from .env.
-mydb = mysql.connector.connect(
+# use a connection pool with MySQL
+connection_pool = pooling.MySQLConnectionPool(
+    pool_name="TaipeiTravelpool",
+    pool_size=5,
+    pool_reset_session=True,
     host=os.getenv("DBHOST"),
     user=os.getenv("DBUSER"),
     password=os.getenv("DBPASSWORD"),
-    database="travel",
+    database=os.getenv("DBDATABSE"),
 )
-mydb.ping(reconnect=True, attempts=1, delay=0)
 
-if (mydb.is_connected()):
+# Get connection obj. from a pool
+connection_object = connection_pool.get_connection()
+if connection_object.is_connected():
     print("Connected")
 else:
     print("Not connected")
-mycursor = mydb.cursor()
-cursor = mydb.cursor(dictionary=True)
+cursor = connection_object.cursor(dictionary=True)
+
+
+# mydb = mysql.connector.connect(
+#     host=os.getenv("DBHOST"),
+#     user=os.getenv("DBUSER"),
+#     password=os.getenv("DBPASSWORD"),
+#     database=os.getenv("DBDATABSE"),
+# )
+# mydb.ping(reconnect=True, attempts=1, delay=0)
+
+# if (mydb.is_connected()):
+#     print("Connected")
+# else:
+#     print("Not connected")
+# mycursor = mydb.cursor()
+# cursor = mydb.cursor(dictionary=True)
 
 
 # Pages
@@ -89,7 +111,7 @@ def userRegister():
             }), 400
         else:
             cursor.execute('INSERT INTO user VALUES (default, %s, %s, %s, default)', (name, email, password))
-            mydb.commit()
+            connection_object.commit()
             return jsonify({ 
                 "ok": True 
             }), 200
@@ -189,7 +211,7 @@ def getAttractions():
 
             if len(spotList) < 12:
                 nextpage = None
-                print(len(spotList))
+                # print(len(spotList))
             else:
                 nextpage = page+1
 
@@ -198,11 +220,16 @@ def getAttractions():
                 "data": spotList
             }
             return jsonify(SearchResult), 200
-    except:
+    # except:
+    #     return jsonify({
+    #         "error": True,
+    #         "message": "伺服器內部錯誤"
+    #     }), 500
+    except Exception as err:
+        print(err)
         return jsonify({
-            "error": True,
-            "message": "伺服器內部錯誤"
-        }), 500
+            "error": True, 
+            "message": "伺服器內部錯誤"}), 500
 
 
 @app.route('/api/attraction/<attractionId>')
@@ -359,16 +386,16 @@ def postOrder():
         status = 1  #1【未付款】
         
         cursor.execute('INSERT INTO orderEntry VALUES (default, %s, default, %s, %s, %s, %s, %s, %s, %s, default)', (orderNumber, price, userID, phone, attractionID, date, time, status))
-        mydb.commit()
+        connection_object.commit()
 
         url = 'https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime'
         headers = {
             "content-type": 'application/json',
-            "x-api-key": 'partner_RU1bOYgVnvLvJmLhliwqdudmUoA5xo1UzjDWnbiI3h4GsFzSTUU5fO9v'
+            "x-api-key": os.getenv("TAPPAY_partner_key"),
         }
         tappayData = json.dumps({
             "prime": request.get_json()["prime"],
-            "partner_key": "partner_RU1bOYgVnvLvJmLhliwqdudmUoA5xo1UzjDWnbiI3h4GsFzSTUU5fO9v",
+            "partner_key": os.getenv("TAPPAY_partner_key"),
             "merchant_id": "PadaProject_TAISHIN",
             "details": "TapPay Test",
             "amount": request.get_json()["order"]["price"],
@@ -386,7 +413,7 @@ def postOrder():
         if data["status"]==0:
             status = data["status"]  #【付款成功】
             cursor.execute('UPDATE orderEntry SET bank_transaction_id = %s, status = %s WHERE order_number = %s', (data["bank_transaction_id"], status, orderNumber,))
-            mydb.commit()
+            connection_object.commit()
 
             cursor.execute('SELECT * FROM orderEntry WHERE order_number = %s', (orderNumber,))
             extractData=cursor.fetchone()
@@ -403,7 +430,7 @@ def postOrder():
         else:
             status = data["status"] #【付款失敗】
             cursor.execute('UPDATE orderEntry SET status = %s WHERE order_number = %s', (status, orderNumber,))
-            mydb.commit()
+            connection_object.commit()
 
             cursor.execute('SELECT * FROM orderEntry WHERE order_number = %s', (orderNumber,))
             extractData=cursor.fetchone()
@@ -435,10 +462,10 @@ def orderNumber(orderNumber):
         url = 'https://sandbox.tappaysdk.com/tpc/transaction/query'
         headers = {
             "content-type": 'application/json',
-            "x-api-key": 'partner_RU1bOYgVnvLvJmLhliwqdudmUoA5xo1UzjDWnbiI3h4GsFzSTUU5fO9v'
+            "x-api-key": os.getenv("TAPPAY_partner_key"),
         }
         queryData = json.dumps({
-            "partner_key": "partner_RU1bOYgVnvLvJmLhliwqdudmUoA5xo1UzjDWnbiI3h4GsFzSTUU5fO9v",
+            "partner_key": os.getenv("TAPPAY_partner_key"),
             "filters": {
                 "order_number": orderNumber
             }
